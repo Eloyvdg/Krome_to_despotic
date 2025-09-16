@@ -17,6 +17,10 @@ readme = "README.md"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+Krome_to_despotic = ["info_fillout.log"]
