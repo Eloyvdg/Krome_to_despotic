@@ -25,6 +25,10 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+src/*.egg-info/
+LAMBDA/
+src/Krome_to_despotic/LAMBDA/
+src/Krome_to_despotic/__pycache__/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
