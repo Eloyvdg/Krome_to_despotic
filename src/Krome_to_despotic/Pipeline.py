@@ -3,8 +3,6 @@ import os
 from Krome_to_despotic.utils import *
 import glob
 import warnings
-import os
-import time
 from despotic import cloud
 
 
@@ -579,7 +577,6 @@ class DespoticRunner():
         self.file_editor.change_constants(data, self.metallicity, self.redshift, LTE, dVdr_input, sigmaNT, species_KROME = species_KROME, species_despotic=species_despotic)
         self.gmc.comp._check_abundance(tolerance=1e-3)
         
-        start = time.time()
         results = np.zeros((len(properties), n_transitions, points))
         nH_array = np.zeros(points)
         krome_array = np.zeros((4,points))
@@ -602,7 +599,6 @@ class DespoticRunner():
                 list_property_data[j] = list_properties[properties[j]]
                 results[j,:,step_idx] = list_properties[properties[j]][:,0]
 
-        end = time.time()
         
         if save == True: 
             with open(f'build/{species_KROME}_z{self.redshift}_Z{self.metallicity:.0e}.txt', 'w') as file:
