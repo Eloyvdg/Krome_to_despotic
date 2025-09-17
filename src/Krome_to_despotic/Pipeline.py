@@ -3,8 +3,6 @@ import os
 from Krome_to_despotic.utils import *
 import glob
 import warnings
-from joblib import Parallel, delayed
-import copy
 import os
 import time
 from despotic import cloud
