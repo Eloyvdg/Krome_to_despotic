@@ -975,7 +975,7 @@ def shielding_length(n):
     return L_0 * (n/n_0)**(-a)
     
     
-def ncol(nH, Lj): 
+def ncol(nH, L): 
     """
     Calculate the column density given the number density and path length.
     Parameters

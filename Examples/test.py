@@ -2,18 +2,18 @@ from Krome_to_despotic.Pipeline import KromeDespoticPipeline
 import numpy as np
 
 # Change the following paths to your local paths
-path_krome = 'directory_to_KROME'
-path_cloud = 'Directory_to_despotic_clouds' 
+path_krome = 'Directory_to_your_KROME'
+path_cloud = 'Directory_to_your_despotic_cloud' 
 
  # Initial conditions 
 metallicity_input = 1 # Solar metallicity
-redshift_input = 10 # Cosmological redshift
+redshift_input = 0 # Cosmological redshift
 d2g = None # dust-to-gas ratio, if None, taken from metallicity
 
 # Physical parameters
 crate = 2e-16 # Cosmic ray ionization rate,  s^-1 H_2^-1
 chi0 = 1.0 # ISRF, relative to Solar neighborhood
-sigmaNT = 5e6  # non-thermal velocity dispersion, cm s^-1
+sigmaNT = 2e5  # non-thermal velocity dispersion, cm s^-1
 dVdr = None # Velocity gradient, s^-1
 LTE = False # Local Thermal Equilibrium. If False, non-LTE
 geometry = 'LVG' # Cloud geometry, 'LVG', 'sphere' or 'slab'
@@ -24,7 +24,7 @@ test_name = 'popsicle_semenov_photo_cr_full_ismEqTest' # Name of the test in KRO
 test = 'test_shielded' # Name of the sub-test in KROME
 
 # Despotic parameters
-species = [('CO', 5), ('C', 2), ('NH', 3)] # List of tuples (species, n_transitions)
+species = [('CO', 5), ('C', 2)] # List of tuples (species, n_transitions)
 properties = ['intTB', 'tau', 'Tex'] # List of despotic properties to compute
 
 # Additional parameters
@@ -39,10 +39,10 @@ stop_density  = 3e6   # Density to stop the calculations at, cm^-3
 factor = 1.25 # Factor between consecutive densities
 
 # number of steps = log(stop/start) / log(factor)
-num_steps = int(np.floor(np.log(stop/start) / np.log(factor))) + 1
+num_steps = int(np.floor(np.log(stop_density/start_density) / np.log(factor))) + 1
 
 # Array of densities to calculate at   
-density_array = start * factor**np.arange(num_steps)
+density_array = start_density * factor**np.arange(num_steps)
 
 # Initialize and run the pipeline
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
