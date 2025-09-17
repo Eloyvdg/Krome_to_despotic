@@ -1,0 +1,115 @@
+#####################################################################################
+# This file shows the input parameters for the Krome_to_despotic package
+# The authors of this package are: Eloy van de Genugten (genugten@strw.leidenuniv.nl)
+#                                  Piyush Sharda (sharda@strw.leidenuniv.nl)
+# The authors of KROME are       : Shyam Menon (smenon@flatironinstitute.org)
+#                                  Piyush Sharda (sharda@strw.leidenuniv.nl)
+# The author of despotic is      : Mark Krumholz (mark.krumholz@anu.edu.au) 
+#####################################################################################
+
+#########################################################
+
+The initial settings for this test are:
+Test name          : popsicle_semenov_photo_cr_full_ismEqTest, test_shielded
+Redshift           : 0
+Metallicity        : 1 Solar metallicity
+CR ionization rate : 2e-16 s^-1 H_2^-1
+Chi0               : 1.0, relative to Solar neighborhood
+SigmaNT            : 2E+05 cm s^-1
+dVdr               : Calculated as sigmaNT divided by Jeans length, s^-1
+Dust-to-gas ratio  : linear to metallicity
+Initial density    : 0.1 cm^-3
+
+#########################################################
+
+The densities at which calculations are performed are (cm^-3):
+1E+01, 1E+01, 2E+01, 2E+01, 2E+01, 3E+01, 4E+01, 5E+01, 6E+01, 7E+01, 9E+01, 1E+02, 1E+02, 2E+02, 2E+02, 3E+02, 4E+02, 4E+02, 6E+02, 7E+02, 9E+02, 1E+03, 1E+03, 2E+03, 2E+03, 3E+03, 3E+03, 4E+03, 5E+03, 6E+03, 8E+03, 1E+04, 1E+04, 2E+04, 2E+04, 2E+04, 3E+04, 4E+04, 5E+04, 6E+04, 8E+04, 9E+04, 1E+05, 1E+05, 2E+05, 2E+05, 3E+05, 4E+05, 4E+05, 6E+05, 7E+05, 9E+05, 1E+06, 1E+06, 2E+06, 2E+06, 3E+06
+
+#########################################################
+
+The following species are calculated:
+CO, C
+
+#########################################################
+
+Other settings:
+Chemistry is turned on for the calculations
+Shielding length used for column density calculation
+Geometry for non-LTE calculations: LVG
+
+#########################################################
+KROME LOGGING:
+#########################################################
+
+#This file contains index list and other info
+
+
+#********************************
+# Species list with their indexes
+1	E	krome_idx_E
+2	H-	krome_idx_Hk
+3	D-	krome_idx_Dk
+4	H	krome_idx_H
+5	HE	krome_idx_HE
+6	H2	krome_idx_H2
+7	HD	krome_idx_HD
+8	D	krome_idx_D
+9	O	krome_idx_O
+10	H2O	krome_idx_H2O
+11	OH	krome_idx_OH
+12	O2	krome_idx_O2
+13	CH	krome_idx_CH
+14	CO	krome_idx_CO
+15	CH2	krome_idx_CH2
+16	C	krome_idx_C
+17	CO2	krome_idx_CO2
+18	CH3	krome_idx_CH3
+19	CH4	krome_idx_CH4
+20	H+	krome_idx_Hj
+21	HE+	krome_idx_HEj
+22	H2+	krome_idx_H2j
+23	D+	krome_idx_Dj
+24	HD+	krome_idx_HDj
+25	O+	krome_idx_Oj
+26	OH+	krome_idx_OHj
+27	H2O+	krome_idx_H2Oj
+28	H3O+	krome_idx_H3Oj
+29	H3+	krome_idx_H3j
+30	O2+	krome_idx_O2j
+31	C+	krome_idx_Cj
+32	CO+	krome_idx_COj
+33	CH2+	krome_idx_CH2j
+34	HCO+	krome_idx_HCOj
+35	CH+	krome_idx_CHj
+36	HE++	krome_idx_HEjj
+37	CR	krome_idx_CR
+38	g	krome_idx_g
+39	Tgas	krome_idx_Tgas
+40	dummy	krome_idx_dummy
+
+#Note: the first 36 variables above should be used
+# as framework code passive scalars, while the last 4
+# are employed inside KROME.
+
+
+#********************************
+# Species in a Python list of strings
+["E", "H-", "D-", "H", "HE", "H2", "HD", "D", "O", "H2O", \
+ "OH", "O2", "CH", "CO", "CH2", "C", "CO2", "CH3", "CH4", "H+", \
+ "HE+", "H2+", "D+", "HD+", "O+", "OH+", "H2O+", "H3O+", "H3+", "O2+", \
+ "C+", "CO+", "CH2+", "HCO+", "CH+", "HE++", "CR", "g", "Tgas", "dummy", \
+ ]
+
+
+#********************************
+#useful parameters
+krome_nrea           = 199  !number of reactions
+krome_nmols          = 36   !number of chemical species
+krome_nspec          = 40   !number of species including Tgas,CR,...
+krome_ndust          = 0    !number of dust bins (total)
+krome_ndustTypes     = 0    !number of dust types
+krome_nPhotoBins     = 0    !number of radiation bins
+krome_nPhotoRates    = 0    !number of photochemical reactions
+
+
+#********************************
