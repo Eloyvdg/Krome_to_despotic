@@ -21,21 +21,21 @@ git clone https://github.com/Eloyvdg/Krome_to_despotic.git
 
 ```
 
-## Running tests
-An example test can be found in the Examples folder. 
-To run the test, type: 
-
-```sh
-python -m Examples.test
-```
-
 **Dependencies:**
 - numpy
 - pexpect
 - despotic
 - KROME
 
-Make sure you have KROME and Despotic installed and accessible.
+Make sure you have KROME and Despotic installed and accessible. Despotic should be stored in the same folder as Krome_to_despotic.
+
+## Running tests
+An example test can be found in the Examples folder. 
+To run the test, change the directories and type: 
+
+```sh
+python -m Examples.test
+```
 
 ## Authors
 Written by Eloy van de Genugten

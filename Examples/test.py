@@ -1,48 +1,54 @@
 from Krome_to_despotic.Pipeline import KromeDespoticPipeline
 import numpy as np
 
+# Change the following paths to your local paths
+path_krome = 'directory_to_KROME'
+path_cloud = 'Directory_to_despotic_clouds' 
 
-path_krome = '/home/eloy/Documents/Master_Astronomy/Master_Project/krome_new/'
-path_cloud = '/home/eloy/Documents/Master_Astronomy/Master_Project/mydespotic/cloudfiles_own/MilkyWayGMC.desp' 
-#path_krome_build = '/home/eloy/Documents/Master_Astronomy/Master_Project/krome_new/build/AB_Z0'
-# Popsicle_semenov_photo_cr_ismEqTest/build_z0_Z1e-1/AB_Z-1' 
-
+ # Initial conditions 
 metallicity_input = 1 # Solar metallicity
-redshift_input = 10 
+redshift_input = 10 # Cosmological redshift
+d2g = None # dust-to-gas ratio, if None, taken from metallicity
 
+# Physical parameters
+crate = 2e-16 # Cosmic ray ionization rate,  s^-1 H_2^-1
+chi0 = 1.0 # ISRF, relative to Solar neighborhood
+sigmaNT = 5e6  # non-thermal velocity dispersion, cm s^-1
+dVdr = None # Velocity gradient, s^-1
+LTE = False # Local Thermal Equilibrium. If False, non-LTE
+geometry = 'LVG' # Cloud geometry, 'LVG', 'sphere' or 'slab'
+length = 'jeans' # Cloud length used for column density calculations, 'jeans' or 'shielding'
 
+# KROME parameters
+test_name = 'popsicle_semenov_photo_cr_full_ismEqTest' # Name of the test in KROME
+test = 'test_shielded' # Name of the sub-test in KROME
 
-crate = 2e-16 # s^-1 H_2^-1
-chi0 = 1.0 # ISRF relative to Solar neighborhood
-sigmaNT = 5e6  # non-ther cm s^-1
-dVdr = None # s^-1
-d2g = None
-LTE = False
-species = [('CO', 5), ('C', 2), ('NH', 3)]
-properties = ['intTB', 'tau', 'Tex']
-include_chemistry = True
-length = 'jeans'
-geometry = 'LVG'
-save = True
-safe = False
-clean = True
-verbose = True
+# Despotic parameters
+species = [('CO', 5), ('C', 2), ('NH', 3)] # List of tuples (species, n_transitions)
+properties = ['intTB', 'tau', 'Tex'] # List of despotic properties to compute
 
-start = 1e1   # 10
-stop  = 3e6   # 1,000,000
-factor = 1.25
+# Additional parameters
+include_chemistry = True # Include chemistry from KROME in despotic calculations
+save = True # Save results to a .txt file
+safe = False # Ignore warnings and errors
+clean = True # Clean KROME build folder
+verbose = True # Verbose output
+
+start_density = 1e1   # Density to start the calculations at, cm^-3
+stop_density  = 3e6   # Density to stop the calculations at, cm^-3
+factor = 1.25 # Factor between consecutive densities
 
 # number of steps = log(stop/start) / log(factor)
 num_steps = int(np.floor(np.log(stop/start) / np.log(factor))) + 1
 
+# Array of densities to calculate at   
 density_array = start * factor**np.arange(num_steps)
 
-#density_array = np.array([0.2, 3.0, 10.0, 30.0, 60.0, 100.0])
-
+# Initialize and run the pipeline
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
-                                    test_name = 'popsicle_semenov_photo_cr_full_ismEqTest',
-                                    test = 'test_shielded',
-				    verbose = verbose)
+                                    test_name = test_name,
+                                    test = test,
+				                    verbose = verbose)
 
 krome_start.run(density_array = density_array,
                           metallicity_input = metallicity_input, 
@@ -50,5 +56,3 @@ krome_start.run(density_array = density_array,
                           crate = crate, chi0 = chi0, include_chemistry = include_chemistry, clean = clean, save = save, safe = safe, 
                           LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
                           species = species, properties = properties, length = length, geometry = geometry)
-
-#krome_start.run()
