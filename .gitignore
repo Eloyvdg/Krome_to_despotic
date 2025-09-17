@@ -26,9 +26,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 src/*.egg-info/
-LAMBA/
-src/Krome_to_despotic/LAMDA/
-src/Krome_to_despotic/__pycache__/
+LAMDA/
+Krome_to_despotic/LAMDA/
+Krome_to_despotic/__pycache__/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

@@ -23,8 +23,9 @@ git clone https://github.com/Eloyvdg/Krome_to_despotic.git
 
 **Dependencies:**
 - numpy
-- despotic
 - pexpect
+- despotic
+- KROME
 
 Make sure you have KROME and Despotic installed and accessible.
 
