@@ -21,6 +21,14 @@ git clone https://github.com/Eloyvdg/Krome_to_despotic.git
 
 ```
 
+## Running tests
+An example test can be found in the Examples folder. 
+To run the test, type: 
+
+```sh
+python -m Examples.test
+```
+
 **Dependencies:**
 - numpy
 - pexpect
