@@ -23,7 +23,6 @@ git clone https://github.com/Eloyvdg/Krome_to_despotic.git
 
 **Dependencies:**
 - numpy
-- joblib
 - despotic
 - pexpect
 
