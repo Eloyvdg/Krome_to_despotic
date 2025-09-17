@@ -25,7 +25,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-src/*.egg-info/
+*.egg-info/
 LAMDA/
 Krome_to_despotic/LAMDA/
 Krome_to_despotic/__pycache__/
@@ -198,5 +198,4 @@ cython_debug/
 .cursorindexingignore
 
 # Custom ignores
-venv/
 despotic/
