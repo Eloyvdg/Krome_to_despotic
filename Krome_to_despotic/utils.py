@@ -242,8 +242,17 @@ def validate_metallicity(metallicity, verbose):
             raise ValueError(f'Metallicity must be at least 0')
     
     return metallicity
+
+def lognormal_density(mean, std, points:int = None): 
+    if points is None: 
+        points = 50
+    sigma_sqr = np.log(1 + std**2 / mean**2)
+    sigma = np.sqrt(sigma_sqr)
+    mu = np.log(mean) - 0.5 * sigma_sqr
+    densities = np.random.lognormal(mu, sigma, points)
+    return densities
                 
-def validate_density_array(density_array, test_name, verbose):
+def validate_density_array(density_array, test_name, safe, verbose):
     """
     Validates and processes a density array.
     Parameters
@@ -270,7 +279,18 @@ def validate_density_array(density_array, test_name, verbose):
     - For other tests, densities above 1e18 cm^-3 are removed.
     - The function prints details of any modifications if `verbose` is True.
     """
-    if density_array is None: 
+
+    if safe is True:
+        print('Do you want to use a log normal density distribution?')
+        input_user = input('Type y to confirm or any key to continue with default values: ')
+        if input_user == 'y':
+            mean = float(input('Enter the mean density (cm^-3): '))
+            std = float(input('Enter the standard deviation of the density (cm^-3): '))
+            points = int(input('Enter the number of density points to generate: '))
+            density_array = lognormal_density(mean, std, points)
+
+    if density_array is None:         
+
         density_array = np.logspace(-1, 6, num =8, base = 10)
         if verbose: 
             print('The calculations are performed at the following densities (cm^-3):')
@@ -308,7 +328,6 @@ def validate_density_array(density_array, test_name, verbose):
         initial_density = 0.1
         
     return density_array, initial_density
-    
 
 def levenshtein(string1, string2): 
     """
@@ -499,7 +518,7 @@ def validate_float(**kwargs):
     """
     for name, value in kwargs.items():
         if isinstance(value, int): 
-            value = np.float(value)
+            value = float(value)
         elif not isinstance(value, float): 
             raise TypeError(f'The argument {name} must be a float, got {type(value).__name__}')
 

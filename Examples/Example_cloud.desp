@@ -1,0 +1,34 @@
+# DESPOTIC data file for bulk material in a Milky Way GMC
+
+# Physical properties
+nH 	   = 100.0   	     # Volume density, H cm^-3 (KROME)
+colDen	   = 1.5e22	     # Column density, H cm^-2 (KROME)
+sigmaNT	   = 2.0e5	     # Non-thermal velocity dispersion, cm s^-1
+Tg	   = 8.0	     # Gas temperature, K (KROME)
+Td	   = 10.0	     # Dust temperature, K (KROME)
+dVdr       = 0.0             # Velocity gradient, s^-1 (used for LVG non-LTE calculations)
+
+# Dust properties
+alphaGD	   = 3.2e-34	     # Dust-gas coupling coefficient, erg cm^3 K^-3/2 (KROME)
+sigmaD10   = 2.0e-26         # Cross section to 10K thermal radiation, cm^2 H^-1 (KROME)
+sigmaDPE   = 1.0e-21         # Cross section to 8-13.6 eV photons, cm^2 H^-1 (KROME)
+sigmaDISRF = 3.0e-22         # Cross section to ISRF photons, cm^2 H^-1 (KROME)
+Zdust      = 1.0             # Dust abundance relative to solar (KROME)
+betaDust   = 2.0             # Dust spectral index
+
+# Radiation field
+TCMB       = 2.73            # CMB temperature, in K (KROME)
+TradDust   = 0.0	     # Dust-trapped IR radiation field temperature, in K (KROME)
+ionRate    = 0.0             # Cosmic- / x-ray ionization rate, s^-1 H^-1 (KROME, In KROME unit = s^-1 H2^-1)
+chi        = 0.0             # ISRF strength, relative to solar neighborhood (KROME)
+
+# Chemical composition
+H2OPR	   = 3.0   	     # Ratio of ortho- to para-H2
+xH2	   = 0.5	     # H2 abundance per H nucleus (KROME)
+xHe	   = 0.1             # He abundance per H nucleus (KROME)
+
+# Emitting species
+emitter	   = co   5.9e-5     # CO, abundance 1.0e-4 (KROME)
+
+
+

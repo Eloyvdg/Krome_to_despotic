@@ -2,8 +2,8 @@ from Krome_to_despotic.Pipeline import KromeDespoticPipeline
 import numpy as np
 
 # Change the following paths to your local paths
-path_krome = 'Directory_to_your_KROME'
-path_cloud = 'Directory_to_your_despotic_cloud' 
+path_krome = 'YOUR_PATH_TO_KROME'
+path_cloud = 'Examples/Example_cloud.desp' 
 
  # Initial conditions 
 metallicity_input = 1 # Solar metallicity
@@ -12,12 +12,12 @@ d2g = None # dust-to-gas ratio, if None, taken from metallicity
 
 # Physical parameters
 crate = 2e-16 # Cosmic ray ionization rate,  s^-1 H_2^-1
-chi0 = 1.0 # ISRF, relative to Solar neighborhood
+chi0 = 1 # ISRF, relative to Solar neighborhood
 sigmaNT = 2e5  # non-thermal velocity dispersion, cm s^-1
 dVdr = None # Velocity gradient, s^-1
 LTE = False # Local Thermal Equilibrium. If False, non-LTE
 geometry = 'LVG' # Cloud geometry, 'LVG', 'sphere' or 'slab'
-length = 'jeans' # Cloud length used for column density calculations, 'jeans' or 'shielding'
+length = 'shielding' # Cloud length used for column density calculations, 'jeans' or 'shielding'
 
 # KROME parameters
 test_name = 'popsicle_semenov_photo_cr_full_ismEqTest' # Name of the test in KROME
@@ -48,11 +48,12 @@ density_array = start_density * factor**np.arange(num_steps)
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
                                     test_name = test_name,
                                     test = test,
-				                    verbose = verbose)
+				    verbose = verbose)
 
 krome_start.run(density_array = density_array,
                           metallicity_input = metallicity_input, 
                           redshift_input = redshift_input,
                           crate = crate, chi0 = chi0, include_chemistry = include_chemistry, clean = clean, save = save, safe = safe, 
                           LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
-                          species = species, properties = properties, length = length, geometry = geometry)
+                          species = species, properties = properties, length = length, geometry = geometry,
+			  folder_name_save = 'build_test')

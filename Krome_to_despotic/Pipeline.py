@@ -1,6 +1,8 @@
+from tabnanny import verbose
 import numpy as np
 import os 
 from Krome_to_despotic.utils import *
+from Krome_to_despotic.cosmology import age_universe
 import glob
 import warnings
 from despotic import cloud
@@ -54,7 +56,7 @@ class KROME_FileEditor:
                    
         for line in lines: 
             
-            if 'crate = ' in line and 'calculate_F' not in line: 
+            if 'crate_0 = ' in line and 'calculate_F' not in line: 
                 if crate is not None:
                     # Change crate
                     line_split = line.split(' ')
@@ -140,10 +142,25 @@ class KROME_FileEditor:
             
             elif 'dens_array = (/' in line: 
                 line_split = line.split('(/')
-                values = values_str = ", ".join(f"{v:.1f}" for v in density_array)
+                values_str = ", ".join(f"{v:.1f}" for v in density_array)
                 line_split[1] = f'{values_str}' + '/)'
                 line = ('(/').join(line_split)
 
+            elif 'max_time=' in line: 
+                age_of_universe = age_universe(self.redshift) - 1e8 # Subtract first 100 Myr to allow for star formation at high z
+                print('The max_time is set to the age of the universe at z =', self.redshift, 'which is', "{0:.3E}".format(age_of_universe), 'years')
+                print('The first 100 Myr are subtracted, because stars were not formed before that time')
+                if 'MIN' in line: 
+                    line_split = line.split('MIN(')
+                    line_split[1] = str("{0:.3E}".format(age_of_universe)) + f',1e9)'
+                    line = ('MIN(').join(line_split)
+                    line = d_formatter(line)
+                else:
+                    line_split = line.split('*')
+                    line_split[1] = 'MIN(' + str("{0:.3E}".format(age_of_universe)) + ',1e9)'
+                    line = ('*').join(line_split)
+                    line = d_formatter(line)
+ 
             newlines.append(line)
                 
         
@@ -173,7 +190,7 @@ class KromeRunner():
         self.test = test
         self.file_editor = file_editor
         
-    def run_krome(self, density_array:np.ndarray, crate:float = None, chi:float = None, sigmaNT:float = None, d2g:float = None, verbose:bool = True, clean:bool = True, safe:bool = False):
+    def run_krome(self, density_array:np.ndarray, crate:float = None, chi:float = None, sigmaNT:float = None, d2g:float = None, verbose:bool = True, clean:bool = True, safe:bool = False, folder_name_save = 'build', project:str = None):
         """
         Runs the KROME chemical modeling pipeline for a given test case, allowing customization of physical parameters and build options.
         Parameters:
@@ -196,17 +213,35 @@ class KromeRunner():
         
         if clean == True: 
             try: 
-                path_to_build = os.path.join(self.path, 'build')
+                path_to_build = os.path.join(self.path, 'build' + f'_{project}' if project is not None else 'build')
                 run_subprocess_no_input('rm', args = ['-rf', path_to_build], verbose = verbose)
                 run_subprocess_no_input('mkdir', args = [path_to_build], verbose = verbose)
                 if verbose: 
                     print("Build directory is cleaned")
             except FileNotFoundError: 
-                run_subprocess_no_input('mkdir', args = [path_to_build], verbose = verbose)
+                run_subprocess_no_input('mkdir', args = [path_to_build + f'_{project}' if project is not None else path_to_build], verbose = verbose)
         
-        run_subprocess_input(os.path.join(self.path, 'krome'), args = ['-test', self.test_name], cwd = self.path, safe = safe, verbose = verbose)
-        
-        cwd = os.path.join(self.path, 'build')
+        if project is None:
+            run_subprocess_input(os.path.join(self.path, 'krome'), args = ['-test', self.test_name], cwd = self.path, safe = safe, verbose = verbose)
+            build_folder = self.path + 'build/'
+
+        else: 
+            run_subprocess_input(os.path.join(self.path, 'krome'), args = ['-test', self.test_name, '-project', project], cwd = self.path, safe = safe, verbose = verbose)
+            build_folder = self.path + 'build' + f'_{project}/'
+
+        #try: 
+        #    build_folder = glob.glob(os.path.join(self.path, 'build/fort.22'))[0]
+        #except: 
+        #    build_folder = glob.glob(self.path + 'build/AB*')[0]
+
+        #build_folder = self.path + 'build'
+
+        run_subprocess_no_input('mv', args = [build_folder, folder_name_save + '/build/'], verbose = verbose)
+
+        #cwd = os.path.join(self.path, 'build')
+        #cwd = 'build/build'
+        cwd = folder_name_save + '/build'
+        print('cwd =', cwd)
         run_subprocess_no_input('make', args = ['gfortran'], cwd = cwd, capture_output = False, text = False, verbose = verbose)
         run_subprocess_no_input('./' + self.test, cwd = cwd, capture_output = False, text = False, verbose = verbose)
    
@@ -488,7 +523,7 @@ class DespoticRunner():
     def run_despotic(self, density_array:np.ndarray, n_transitions:int, data:np.ndarray = None, properties:list = ['intTB', 'Tex', 'tau'], chem:bool = True,
                      crate:float = None, chi:float = None, LTE:bool = False, dVdr_input:float = None, sigmaNT:float = None,
                      species_KROME:str = 'CO', species_despotic:str = 'co', clean:bool = False, save:bool = True, safe:bool = False, mu:float = 2.3333, idx:int = -1,
-                     verbose:bool = True, length:str='jeans', geometry:str='LVG'):
+                     verbose:bool = True, length:str='jeans', geometry:str='LVG', folder_name_save = 'build'):
         """
         Runs the despotic line emission calculation pipeline for a given cloud model, allowing customization of physical parameters and output options.
 
@@ -556,11 +591,20 @@ class DespoticRunner():
         
         properties = validate_properties(properties)
             
+        #if data is None: 
+        #   try: 
+        #        data = open_krome(os.path.join('build/build/fort.22'))
+        #    except: 
+        #        file = glob.glob('build/build/AB*')
+        #        data = open_krome(file[0])
+        #else: 
+        #    data = data
+
         if data is None: 
             try: 
-                data = open_krome(os.path.join(self.path, 'build/fort.22'))
+                data = open_krome(os.path.join(folder_name_save + '/build/fort.22'))
             except: 
-                file = glob.glob(self.path + 'build/AB*')
+                file = glob.glob(folder_name_save + '/build/AB*')
                 data = open_krome(file[0])
         else: 
             data = data
@@ -601,7 +645,9 @@ class DespoticRunner():
 
         
         if save == True: 
-            with open(f'build/{species_KROME}_z{self.redshift}_Z{self.metallicity:.0e}.txt', 'w') as file:
+            #with open(f'build/{species_KROME}_z{self.redshift}_Z{self.metallicity:.0e}.txt', 'w') as file:
+            with open(folder_name_save + f'/{species_KROME}_z{self.redshift}_Z{self.metallicity:.0e}.txt', 'w') as file:
+
                 valid_properties = np.array(['freq','upper','lower','Tupper','Tex','lumperH','intIntensity','intTB','tau','taudust'])
                 units = np.array(['GHz', 'dimensionless', 'dimensionless', 'K', 'K', 'erg_s^-1', 'erg_cm^−2_s^−1_sr^−1', 'K_km_s^-1', 'dimensionless', 'dimensionless'])
                 
@@ -674,8 +720,8 @@ class KromeDespoticPipeline():
             redshift_input:float = None, crate:float = None, chi0:float = None, 
             d2g:float = None, include_chemistry:bool = True, 
             species:str = None, properties:list = None, skip_krome:bool=False,
-            sigmaNT:float = None, dVdr:float = None, LTE:bool=False,
-            length:str = None, geometry:str = None, **kwargs):
+            sigmaNT:float = None, dVdr:float = None, LTE:bool=False, safe:bool = False,
+            length:str = None, geometry:str = None, folder_name_save:str = 'build', project:str = None, **kwargs):
         
         """
         Runs the KROME to despotic pipeline, integrating chemical modeling with line emission calculations.
@@ -737,9 +783,12 @@ class KromeDespoticPipeline():
         - If skip_krome is True, ensure that the KROME output files are present in the build directory
         """
         
+        if folder_name_save is None:
+            folder_name_save = 'build'
 
-        density_array, density = validate_density_array(density_array, self.test_name, self.verbose)
-        target_density = density_array[-1]
+
+        density_array, density = validate_density_array(density_array, self.test_name, safe, self.verbose)
+        #target_density = density_array[-1]
         
         metallicity = validate_metallicity(metallicity_input, self.verbose)
         redshift = validate_redshift(redshift_input, self.verbose)
@@ -754,14 +803,32 @@ class KromeDespoticPipeline():
         if LTE == False:
             geometry = validate_geometry(geometry, self.verbose)
         
+        folder_name = folder_name_save.split('/')[-2]
         try: 
-            os.mkdir('build/')
-            if self.verbose: 
-                print('Create build/')
+            os.mkdir(folder_name)
         except FileExistsError:
             pass
+        
+        try: 
+            os.mkdir(folder_name_save)
 
-        log_file = open('build/info.log', 'w')
+            if self.verbose: 
+                print(f'Create {folder_name}/')
+        except FileExistsError:
+            if safe is True:
+                print('This folder already exists, do you want to overwrite it? ')
+                input_user = input('Type q to quit or any key to continue: ')
+                if input_user == 'q':
+                    raise FileExistsError('The folder already exists, quitting the program')
+                else: 
+                    run_subprocess_no_input('rm', args = ['-rf', folder_name], verbose = self.verbose)
+            else: 
+                run_subprocess_no_input('rm', args = ['-rf', folder_name], verbose = self.verbose)
+            os.mkdir(folder_name_save)
+
+        #log_file = open('build/info.log', 'w')
+        log_file = open(folder_name_save + '/info.log', 'w')
+
         log_file.write('#####################################################################################\n')
         log_file.write('# This file shows the input parameters for the Krome_to_despotic package\n')
         log_file.write('# The authors of this package are: Eloy van de Genugten (genugten@strw.leidenuniv.nl)\n')
@@ -820,17 +887,21 @@ class KromeDespoticPipeline():
                                          density, metallicity, redshift, file_editor_despotic)
         
         
+
+
         if skip_krome is False: 
-            krome_runner.run_krome(density_array, crate, chi, sigmaNT = sigmaNT, d2g = d2g, verbose = self.verbose, clean=kwargs.get("clean", True), safe=kwargs.get("safe", False))
+            krome_runner.run_krome(density_array, crate, chi, sigmaNT = sigmaNT, d2g = d2g, verbose = self.verbose, clean=kwargs.get("clean", True), safe=kwargs.get("safe", False), folder_name_save = folder_name_save, project = project)
           
         log_file.write('\n\n')
         log_file.write('#########################################################\n')
         log_file.write('KROME LOGGING:\n')
         log_file.write('#########################################################\n\n')
 
-        krome_log = open(self.path + 'build/info.log')
+        #krome_log = open('build/build/info.log')
+        krome_log = open(folder_name_save +'/build/info.log')
+
         for line in krome_log: 
-            if '#list of reactions' in line:
+            if 'krome_nspec' in line:
                 break
             
             log_file.write(line)
@@ -866,4 +937,6 @@ class KromeDespoticPipeline():
                 
             species_KROME, species_despotic = get_species_name(specy)
             despotic_runner.run_despotic(density_array, n_transitions[i], species_KROME = species_KROME, species_despotic = species_despotic, crate = crate, chi = chi, sigmaNT = sigmaNT, chem = include_chemistry, properties = properties, LTE = LTE, 
-                                         verbose = self.verbose, length = length, geometry = geometry, **kwargs)
+                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save,**kwargs)
+            
+        
