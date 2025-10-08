@@ -721,7 +721,8 @@ class KromeDespoticPipeline():
             d2g:float = None, include_chemistry:bool = True, 
             species:str = None, properties:list = None, skip_krome:bool=False,
             sigmaNT:float = None, dVdr:float = None, LTE:bool=False, safe:bool = False,
-            length:str = None, geometry:str = None, folder_name_save:str = 'build', project:str = None, **kwargs):
+            length:str = None, geometry:str = None, folder_name_save:str = 'build', project:str = None, 
+            path_to_krome_data:str = None, **kwargs):
         
         """
         Runs the KROME to despotic pipeline, integrating chemical modeling with line emission calculations.
@@ -803,12 +804,16 @@ class KromeDespoticPipeline():
         if LTE == False:
             geometry = validate_geometry(geometry, self.verbose)
         
-        folder_name = folder_name_save.split('/')[-2]
+        try:
+            folder_name = folder_name_save.split('/')[-2]
+        except IndexError:
+            folder_name = folder_name_save
+        
         try: 
             os.mkdir(folder_name)
         except FileExistsError:
             pass
-        
+
         try: 
             os.mkdir(folder_name_save)
 
@@ -878,9 +883,9 @@ class KromeDespoticPipeline():
         if LTE == False:
             log_file.write(f'Geometry for non-LTE calculations: {geometry}')
 
-
-        file_editor_krome = KROME_FileEditor(density, metallicity, redshift)
-        krome_runner = KromeRunner(self.path, file_editor_krome, self.test_name, self.test)
+        if skip_krome is False:
+            file_editor_krome = KROME_FileEditor(density, metallicity, redshift)
+            krome_runner = KromeRunner(self.path, file_editor_krome, self.test_name, self.test)
         
         file_editor_despotic = Despotic_FileEditor(self.cloud)
         despotic_runner = DespoticRunner(self.path, self.path_to_cloud, self.cloud, self.test_name, 
@@ -898,7 +903,10 @@ class KromeDespoticPipeline():
         log_file.write('#########################################################\n\n')
 
         #krome_log = open('build/build/info.log')
-        krome_log = open(folder_name_save +'/build/info.log')
+        try:
+            krome_log = open(folder_name_save +'/build/info.log')
+        except FileNotFoundError:
+            krome_log = open(path_to_krome_data +'/info.log')
 
         for line in krome_log: 
             if 'krome_nspec' in line:
@@ -936,7 +944,15 @@ class KromeDespoticPipeline():
                     continue
                 
             species_KROME, species_despotic = get_species_name(specy)
-            despotic_runner.run_despotic(density_array, n_transitions[i], species_KROME = species_KROME, species_despotic = species_despotic, crate = crate, chi = chi, sigmaNT = sigmaNT, chem = include_chemistry, properties = properties, LTE = LTE, 
-                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save,**kwargs)
+
+            if skip_krome is True:
+                try: 
+                    data = open_krome(os.path.join(path_to_krome_data + '/fort.22'))
+                except: 
+                    file = glob.glob(path_to_krome_data + '/AB*')
+                    data = open_krome(file[0])
+            else: 
+                data = None
             
-        
+            despotic_runner.run_despotic(density_array, n_transitions[i], data = data, species_KROME = species_KROME, species_despotic = species_despotic, crate = crate, chi = chi, sigmaNT = sigmaNT, chem = include_chemistry, properties = properties, LTE = LTE, 
+                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save, **kwargs)

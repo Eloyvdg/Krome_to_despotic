@@ -2,9 +2,9 @@ from Krome_to_despotic.Pipeline import KromeDespoticPipeline
 import numpy as np
 
 # Change the following paths to your local paths
-path_krome = 'YOUR_PATH_TO_KROME'
+path_krome = '/home/eloy/Documents/Master_Astronomy/Master_Project/krome_new/'
 path_cloud = 'Examples/Example_cloud.desp' 
-
+path_to_krome_data = '/home/eloy/Documents/Master_Astronomy/Master_Project/Models/build_redshift_Z/build_0_0/build/'
  # Initial conditions 
 metallicity_input = 1 # Solar metallicity
 redshift_input = 0 # Cosmological redshift
@@ -33,6 +33,7 @@ save = True # Save results to a .txt file
 safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
+skip_krome = True
 
 start_density = 1e1   # Density to start the calculations at, cm^-3
 stop_density  = 3e6   # Density to stop the calculations at, cm^-3
@@ -56,4 +57,4 @@ krome_start.run(density_array = density_array,
                           crate = crate, chi0 = chi0, include_chemistry = include_chemistry, clean = clean, save = save, safe = safe, 
                           LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
                           species = species, properties = properties, length = length, geometry = geometry,
-			  folder_name_save = 'build_test')
+			  folder_name_save = 'build_test', path_to_krome_data = path_to_krome_data, skip_krome=skip_krome)
