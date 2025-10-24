@@ -49,13 +49,16 @@ class KROME_FileEditor:
         """
         
         target_density = density_array[-1]
+        ntot_list = [str("{0:.0E}".format(self.density)), None, str("{0:.0E}".format(target_density))]
+        idx_ntot_list = 0
+
         newlines = []
         
         with open(path, 'r') as file: 
                 lines = file.readlines()
                    
         for line in lines: 
-            
+
             if 'crate_0 = ' in line and 'calculate_F' not in line: 
                 if crate is not None:
                     # Change crate
@@ -89,11 +92,21 @@ class KROME_FileEditor:
                 line = ('(').join(line_split)
                 line = d_formatter(line)
             
-            elif 'total density' in line: 
-                line_split = line.split(' ')
-                line_split[line_split.index('=') + 1] = str(self.density)
-                line = (' ').join(line_split)
-                
+            #elif 'total density' in line: 
+            #    line_split = line.split(' ')
+            #    line_split[line_split.index('=') + 1] = str(self.density)
+            #    line = (' ').join(line_split)
+            
+            elif 'ntot = ' in line: 
+                print('idx:', idx_ntot_list)
+                if idx_ntot_list == 0 or idx_ntot_list == 2:
+                    line_split = line.split(' ')
+                    line_split[line_split.index('=') + 1] = str(ntot_list[idx_ntot_list])
+                    line = (' ').join(line_split)
+                    line = d_formatter(line)
+
+                idx_ntot_list += 1
+
             elif 'zs = ' in line: 
                 start = line.find('(/')
                 end = line.find('/)', start) + 2
@@ -789,6 +802,7 @@ class KromeDespoticPipeline():
 
 
         density_array, density = validate_density_array(density_array, self.test_name, safe, self.verbose)
+
         #target_density = density_array[-1]
         
         metallicity = validate_metallicity(metallicity_input, self.verbose)

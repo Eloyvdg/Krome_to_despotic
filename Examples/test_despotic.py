@@ -1,16 +1,18 @@
 from Krome_to_despotic.Pipeline import KromeDespoticPipeline
 import numpy as np
+import glob
+import os
 
 # Change the following paths to your local paths
 path_krome = 'YOUR_PATH_TO_KROME'
 path_cloud = 'Examples/Example_cloud.desp' 
+path_to_krome_data = 'YOUR_PATH_TO_KROME_DATA'
 
  # Initial conditions 
 metallicity_input = 1 # Solar metallicity
 redshift_input = 0 # Cosmological redshift
 d2g = None # dust-to-gas ratio, if None, taken from metallicity
-density_array = [0.1, 1e6] # Initial and target density
-
+density_array = [0.1, 1e6] # Initial density and target density
 # Physical parameters
 crate = 2e-16 # Cosmic ray ionization rate,  s^-1 H_2^-1
 chi0 = 1 # ISRF, relative to Solar neighborhood
@@ -34,7 +36,7 @@ save = True # Save results to a .txt file
 safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
-skip_krome = False # Skip the KROME model
+skip_krome = True # Skip KROME, and run despotic directly
 
 # Initialize and run the pipeline
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
@@ -42,10 +44,19 @@ krome_start = KromeDespoticPipeline(path_krome, path_cloud,
                                     test = test,
 				    verbose = verbose)
 
+path = '/home/eloy/Documents/Master_Astronomy/Master_Project/Models/'
+files = glob.glob(path + 'build_crate_chi0_solar/*')
+metallicities = [0.1, 0.5, 1]
+crate_array = np.logspace(-3, 3, num=20, base=10)
+chi0_array = np.logspace(-1, 4, num=20, base=10)
+
+
+path_to_krome_data = file + '/build/'
 krome_start.run(density_array = density_array,
-                          metallicity_input = metallicity_input, 
-                          redshift_input = redshift_input,
-                          crate = crate, chi0 = chi0, include_chemistry = include_chemistry, clean = clean, save = save, safe = safe, 
-                          LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
-                          species = species, properties = properties, length = length, geometry = geometry,
-			  folder_name_save = 'build', skip_krome=skip_krome)
+                        metallicity_input = metallicity_input, 
+                        redshift_input = redshift_input,
+                        crate = crate*crate_array[i], chi0 = chi0_array[j], include_chemistry = include_chemistry,
+                        clean = clean, save = save, safe = safe, 
+                        LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
+                        species = species, properties = properties, length = length, geometry = geometry,
+                        folder_name_save = f'build_despotic/build', path_to_krome_data = path_to_krome_data, skip_krome=skip_krome)

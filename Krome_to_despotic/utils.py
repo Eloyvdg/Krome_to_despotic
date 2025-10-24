@@ -289,12 +289,15 @@ def validate_density_array(density_array, test_name, safe, verbose):
             points = int(input('Enter the number of density points to generate: '))
             density_array = lognormal_density(mean, std, points)
 
-    if density_array is None:         
-
-        density_array = np.logspace(-1, 6, num =8, base = 10)
-        if verbose: 
-            print('The calculations are performed at the following densities (cm^-3):')
-            print(density_array)
+    if density_array is None: 
+        if 'ismEqTest' in test_name: 
+            density_array = np.array([0.01, 1e8]) 
+            if verbose is True: 
+                print('The test will run from 1e-2 to 1e8 cm^-3 by default')
+        else:
+            density_array = np.array([0.01, 1e18])
+            if verbose is True: 
+                print('The test will run from 1e-2 to 1e18 cm^-3 by default')
         
     if isinstance(density_array, list): 
         density_array = np.array(density_array)
