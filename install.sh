@@ -12,5 +12,4 @@ mv despotic_package/despotic/despotic ./
 python3 -m venv venv
 source venv/bin/activate
 
-cd Krome_to_despotic
 pip install .
