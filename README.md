@@ -1,6 +1,7 @@
 # Krome_to_despotic
 
-**Krome_to_despotic** is a Python package that provides a pipeline to combine [KROME](https://bitbucket.org/psharda1/krome) thermo-chemical modeling with [Despotic](https://bitbucket.org/krumholz/despotic) radiative transfer calculations. This tool allows you to run KROME thermo-chemical models, modify their parameters, and use the results as input for Despotic to compute line emission properties for astrophysical clouds.
+**Krome_to_despotic** is a Python package that provides a pipeline to combine [KROME](https://bitbucket.org/psharda1/krome) thermo-chemical modeling with [Despotic](https://bitbucket.org/krumholz/despotic) radiative transfer calculations. This tool allows you to run KROME thermo-chemical models, modify their parameters, and use the results as input for Despotic to compute line emission properties for astrophysical clouds. **Krome_to_despotic** is provided "as it is", without any warranty.
+
 
 ## Features
 
@@ -53,14 +54,25 @@ python3 Examples/test.py
 ## Authors
 Written by Eloy van de Genugten
 ```
-genugten@strw.leidenuniv.nl
+eloyvandegenugten@gmail.com
 Leiden University, Netherlands
 ```
 
-With help of Piyush Sharda
+Collaborators:
+Piyush Sharda
 ```
 sharda@strw.leidenuniv.nl
 Leiden University, Netherlands
+```
+Jackie Hodge
+```
+hodge@strw.leidenuniv.nl
+Leiden University, Netherlands
+```
+Shyam Menon
+```
+smenon@flatironinstitute.org
+Flatiron Institute, USA
 ```
 
 ## License
