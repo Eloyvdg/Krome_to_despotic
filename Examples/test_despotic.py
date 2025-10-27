@@ -1,3 +1,14 @@
+'''
+  ! *************************************************************
+  !  Krome_to_despotic
+  !
+  !  Written by Eloy van de Genugten (Leiden University, 2025)
+  !  With Piyush Sharda (LU), Jackie Hodge (LU) and Shyam Menon (CCA)
+  !  Email: eloyvandegenugten@gmail.com, sharda@strw.leidenuniv.nl
+  !  Krome_to_despotic is provided "as it is", without any warranty.
+  ! *************************************************************
+'''
+
 from Krome_to_despotic.Pipeline import KromeDespoticPipeline
 import numpy as np
 import glob
@@ -11,7 +22,7 @@ path_to_krome_data = 'YOUR_PATH_TO_KROME_DATA'
 
  # Initial conditions 
 metallicity_input = 1 # Solar metallicity
-redshift_input = 0 # Cosmological redshift
+redshift_input = 0 # Redshift
 d2g = None # dust-to-gas ratio, if None, taken from metallicity
 density_array = [0.1, 1e6] # Initial density and target density
 # Physical parameters
