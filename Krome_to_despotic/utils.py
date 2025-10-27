@@ -395,6 +395,9 @@ def validate_test_names(test_name, test, path):
         name = i.split('/')[-1]
         if 'popsicle_semenov' in name: 
             list_names += [name] 
+
+    if len(folders) == 0: 
+        raise ValueError('No test folders found in the specified path')
             
     if test_name not in list_names: 
         lev_results = []

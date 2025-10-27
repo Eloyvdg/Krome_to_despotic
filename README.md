@@ -1,6 +1,6 @@
 # Krome_to_despotic
 
-**Krome_to_despotic** is a Python package that provides a pipeline to combine [KROME](https://bitbucket.org/psharda1/krome) thermo-chemical modeling with [Despotic](https://bitbucket.org/krumholz/despotic) radiative transfer calculations. This tool allows you to run KROME thermo-chemical models, modify their parameters, and use the results as input for Despotic to compute line emission properties for astrophysical clouds. Make sure both of these are installed before you can use this pipeline. 
+**Krome_to_despotic** is a Python package that provides a pipeline to combine [KROME](https://bitbucket.org/psharda1/krome) thermo-chemical modeling with [Despotic](https://bitbucket.org/krumholz/despotic) radiative transfer calculations. This tool allows you to run KROME thermo-chemical models, modify their parameters, and use the results as input for Despotic to compute line emission properties for astrophysical clouds.
 
 ## Features
 
@@ -21,20 +21,33 @@ git clone https://github.com/Eloyvdg/Krome_to_despotic.git
 
 ```
 
+To install KROME and despotic in the right folder, run: 
+
+```sh
+bash install.sh
+
+```
+
+
 **Dependencies:**
 - numpy
 - pexpect
 - despotic
 - KROME
 
-Make sure you have KROME and Despotic installed and accessible. Despotic should be stored in the same folder as Krome_to_despotic.
+You must have gfortran as a Fortran compiler installed before building this package.
+On Ubuntu/Debian:
+```sh
+sudo apt install gfortran
+
+```
 
 ## Running tests
 An example test can be found in the Examples folder. 
-To run the test, change the directories and type: 
+To run the test, type:
 
 ```sh
-python -m Examples.test
+python3 Examples/test.py
 ```
 
 ## Authors
@@ -61,4 +74,4 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-For more details, see the docstrings in the code and the test.py file.
+For more details, see the docstrings in the code and the Examples/test.py file.
