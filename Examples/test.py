@@ -9,7 +9,7 @@ path_cloud = 'Examples/Example_cloud.desp'
 
  # Initial conditions 
 metallicity_input = 1 # Solar metallicity
-redshift_input = 0 # Cosmological redshift
+redshift_input = 0 # Redshift
 d2g = None # dust-to-gas ratio, if None, taken from metallicity
 density_array = [0.1, 1e6] # Initial and target density
 
