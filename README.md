@@ -81,7 +81,7 @@ See [LICENSE](LICENSE) for details.
 
 ## Acknowledgements
 
-- [KROME](https://bitbucket.org/tgrassi/krome) by Shyam Menon, Piyush Sharda, Tomasso Grassi, et al.
+- [KROME](https://bitbucket.org/tgrassi/krome) by Tomasso Grassi, Stefano Bovino, et al.
 - [Despotic](https://bitbucket.org/krumholz/despotic) by Mark Krumholz
 
 ---
