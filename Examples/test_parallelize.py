@@ -9,8 +9,7 @@ import time
 
 # Change the following paths to your local paths
 cwd = os.getcwd()
-parent = os.path.abspath(os.path.join(cwd, ".."))
-path_krome = os.path.join(parent, 'krome/')
+path_krome = os.path.join(cwd, 'krome/')
 path_cloud = 'Examples/Example_cloud.desp' 
 
  # Initial conditions 

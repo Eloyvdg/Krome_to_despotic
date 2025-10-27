@@ -5,8 +5,7 @@ import os
 
 # Change the following paths to your local paths
 cwd = os.getcwd()
-parent = os.path.abspath(os.path.join(cwd, ".."))
-path_krome = os.path.join(parent, 'krome/')
+path_krome = os.path.join(cwd, 'krome/')
 path_cloud = 'Examples/Example_cloud.desp' 
 path_to_krome_data = 'YOUR_PATH_TO_KROME_DATA'
 
