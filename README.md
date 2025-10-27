@@ -81,7 +81,7 @@ See [LICENSE](LICENSE) for details.
 
 ## Acknowledgements
 
-- [KROME](https://bitbucket.org/tgrassi/krome) by Tomasso Grassi, Stefano Bovino, et al.
+- [KROME](https://bitbucket.org/tgrassi/krome) by Tomasso Grassi, Stefano Bovino, et al. (This repository uses a customized version of KROME developed by Piyush Sharda and Shyam Menon).
 - [Despotic](https://bitbucket.org/krumholz/despotic) by Mark Krumholz
 
 ---
