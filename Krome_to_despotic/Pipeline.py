@@ -9,7 +9,6 @@
   ! *************************************************************
 '''
 
-from tabnanny import verbose
 import numpy as np
 import os 
 from Krome_to_despotic.utils import *
@@ -545,7 +544,7 @@ class DespoticRunner():
         return dict_properties, transitions_list
 
     def run_despotic(self, density_array:np.ndarray, n_transitions:int, data:np.ndarray = None, properties:list = ['intTB', 'Tex', 'tau'], chem:bool = True,
-                     crate:float = None, chi:float = None, LTE:bool = False, dVdr_input:float = None, sigmaNT:float = None,
+                     crate:float = None, chi:float = None, LTE:bool = False, dVdr_input:float = None, sigmaNT:float = None, points:int = None,
                      species_KROME:str = 'CO', species_despotic:str = 'co', clean:bool = False, save:bool = True, safe:bool = False, mu:float = 2.3333, idx:int = -1,
                      verbose:bool = True, length:str='jeans', geometry:str='LVG', folder_name_save = 'build'):
         """
@@ -615,15 +614,6 @@ class DespoticRunner():
         
         properties = validate_properties(properties)
             
-        #if data is None: 
-        #   try: 
-        #        data = open_krome(os.path.join('build/build/fort.22'))
-        #    except: 
-        #        file = glob.glob('build/build/AB*')
-        #        data = open_krome(file[0])
-        #else: 
-        #    data = data
-
         if data is None: 
             try: 
                 data = open_krome(os.path.join(folder_name_save + '/build/fort.22'))
@@ -632,7 +622,27 @@ class DespoticRunner():
                 data = open_krome(file[0])
         else: 
             data = data
-            
+
+
+        if len(density_array) == 2: 
+            data_len  = len(data)
+            print('data_len =', data_len)
+            if points == None: 
+                points = data_len
+                if verbose is True:
+                    print(f'The properties will be calculated at {points} points between the two densities provided')
+            else: 
+                if points > data_len:
+                    points = data_len
+                    if verbose:
+                        print(f'The properties will be calculated at the maximum number of points available in the KROME output: {points}')
+            try:
+                density_tot = data['ntot']
+            except ValueError:
+                density_tot = data['nH']
+
+            indices_list = np.linspace(0, data_len - 1, points, dtype=int)  
+            density_array = [density_tot[i] for i in indices_list]            
 
         points = len(density_array)
         n = []
@@ -746,7 +756,7 @@ class KromeDespoticPipeline():
             species:str = None, properties:list = None, skip_krome:bool=False,
             sigmaNT:float = None, dVdr:float = None, LTE:bool=False, safe:bool = False,
             length:str = None, geometry:str = None, folder_name_save:str = 'build', project:str = None, 
-            path_to_krome_data:str = None, **kwargs):
+            path_to_krome_data:str = None, points:int = None, **kwargs):
         
         """
         Runs the KROME to despotic pipeline, integrating chemical modeling with line emission calculations.
@@ -980,4 +990,4 @@ class KromeDespoticPipeline():
                 data = None
             
             despotic_runner.run_despotic(density_array, n_transitions[i], data = data, species_KROME = species_KROME, species_despotic = species_despotic, crate = crate, chi = chi, sigmaNT = sigmaNT, chem = include_chemistry, properties = properties, LTE = LTE, 
-                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save, **kwargs)
+                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save, points = points, **kwargs)
