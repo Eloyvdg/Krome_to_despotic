@@ -1,0 +1,5 @@
+FC = gfortran
+FFLAGS = -O2 -fPIC
+CC = gcc
+CFLAGS = -O2
+LDFLAGS =
