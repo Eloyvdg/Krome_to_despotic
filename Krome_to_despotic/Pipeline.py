@@ -626,11 +626,11 @@ class DespoticRunner():
 
         if len(density_array) == 2: 
             data_len  = len(data)
-            print('data_len =', data_len)
             if points == None: 
-                points = data_len
+                #points = data_len
+                points = 50
                 if verbose is True:
-                    print(f'The properties will be calculated at {points} points between the two densities provided')
+                    print(f'The properties will be calculated at 50 points between the two densities provided')
             else: 
                 if points > data_len:
                     points = data_len

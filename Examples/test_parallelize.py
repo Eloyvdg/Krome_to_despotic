@@ -53,6 +53,7 @@ safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
 skip_krome = False
+points = 50
 
 start_density = 1e1   # Density to start the calculations at, cm^-3
 stop_density  = 3e6   # Density to stop the calculations at, cm^-3
@@ -84,6 +85,7 @@ def run_case(trial_idx, i, j):
             d2g=d2g,
             species=species,
             properties=properties,
+            points = 50,
             length=length,
             geometry=geometry,
             folder_name_save=f'build_crate_chi0_solar_z10/build_{i}_{j}',
