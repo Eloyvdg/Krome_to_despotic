@@ -81,7 +81,7 @@ def run_case(trial_idx, i, j):
             d2g=d2g,
             species=species,
             properties=properties,
-            points = 50,
+            points = points,
             length=length,
             geometry=geometry,
             folder_name_save=f'build_crate_chi0_solar_z10/build_{i}_{j}',
