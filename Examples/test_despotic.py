@@ -48,7 +48,8 @@ save = True # Save results to a .txt file
 safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
-skip_krome = True # Skip KROME, and run despotic directly
+skip_krome = True # Skip KROME and run despotic only
+points = 50 # Number of densities to save
 
 # Initialize and run the pipeline
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
@@ -58,15 +59,11 @@ krome_start = KromeDespoticPipeline(path_krome, path_cloud,
 
 path = '/home/eloy/Documents/Master_Astronomy/Master_Project/Models/'
 files = glob.glob(path + 'build_crate_chi0_solar/*')
-metallicities = [0.1, 0.5, 1]
-crate_array = np.logspace(-3, 3, num=20, base=10)
-chi0_array = np.logspace(-1, 4, num=20, base=10)
-
 
 path_to_krome_data = file + '/build/'
 krome_start.run(density_array = density_array,
                         metallicity_input = metallicity_input, 
-                        redshift_input = redshift_input,
+                        redshift_input = redshift_input, points = points,
                         crate = crate*crate_array[i], chi0 = chi0_array[j], include_chemistry = include_chemistry,
                         clean = clean, save = save, safe = safe, 
                         LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,

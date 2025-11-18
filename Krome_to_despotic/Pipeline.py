@@ -626,11 +626,11 @@ class DespoticRunner():
 
         if len(density_array) == 2: 
             data_len  = len(data)
-            print('data_len =', data_len)
             if points == None: 
-                points = data_len
+                #points = data_len
+                points = 50
                 if verbose is True:
-                    print(f'The properties will be calculated at {points} points between the two densities provided')
+                    print(f'The properties will be calculated at 50 points between the two densities provided')
             else: 
                 if points > data_len:
                     points = data_len
@@ -756,7 +756,7 @@ class KromeDespoticPipeline():
             species:str = None, properties:list = None, skip_krome:bool=False,
             sigmaNT:float = None, dVdr:float = None, LTE:bool=False, safe:bool = False,
             length:str = None, geometry:str = None, folder_name_save:str = 'build', project:str = None, 
-            path_to_krome_data:str = None, points:int = None, **kwargs):
+            path_to_krome_data:str = None, points:int = 50, **kwargs):
         
         """
         Runs the KROME to despotic pipeline, integrating chemical modeling with line emission calculations.
@@ -805,7 +805,9 @@ class KromeDespoticPipeline():
             - 'LVG'   : Large Velocity Gradient
             - 'sphere': Expanding sphere    
             - 'slab'  : Static slab 
-            The default is 'LVG'    
+            The default is 'LVG'
+        points: int, optional
+            Nummber of evenly distributed densities
         kwargs : dict, optional     
             Additional keyword arguments passed to KromeRunner.run_krome method:
             - clean (bool): If True, cleans and recreates the build directory before running. Default is True.

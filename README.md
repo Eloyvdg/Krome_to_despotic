@@ -22,14 +22,28 @@ git clone https://github.com/Eloyvdg/Krome_to_despotic.git
 
 ```
 
-To install KROME and despotic in the right folder, run: 
+To install KROME and despotic in the right folder, run the follwing command. It will create a virtual environment called venv. This can be changed in the install.sh file.  
 
 ```sh
+cd Krome_to_despotic/
 bash install.sh
 
 ```
+Once installed, activate the virtual environment, and run the test.
+In the Examples folder there are three different tests. 
 
+```sh
+source venv/bin/activate
+python3 Examples/test.py
 
+```
+
+Run update.sh to update all the required packages:
+
+```sh
+bash update.sh
+
+```
 **Dependencies:**
 - numpy
 - pexpect
@@ -38,17 +52,10 @@ bash install.sh
 
 You must have gfortran as a Fortran compiler installed before building this package.
 On Ubuntu/Debian:
+
 ```sh
 sudo apt install gfortran
 
-```
-
-## Running tests
-An example test can be found in the Examples folder. 
-To run the test, type:
-
-```sh
-python3 Examples/test.py
 ```
 
 ## Authors

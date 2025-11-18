@@ -11,14 +11,14 @@
 
 cd "$(dirname "$0")"
 
-git clone https://genugten-admin@bitbucket.org/psharda1/krome.git
-git clone https://krumholz@bitbucket.org/krumholz/despotic.git
+git pull
 
-mkdir -p despotic_package
-mv despotic despotic_package/
+mv despotic despotic_package/despotic/
+cd despotic_package/despotic/
+git pull
+cd ../../
 mv despotic_package/despotic/despotic ./
 
-python3 -m venv venv
-source venv/bin/activate
-
-pip install -e .
+cd krome/
+git pull 
+cd ../
