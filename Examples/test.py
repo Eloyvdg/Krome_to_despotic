@@ -47,7 +47,7 @@ save = True # Save results to a .txt file
 safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
-skip_krome = False # Skip the KROME model
+skip_krome = False # Skip KROME and run despotic only
 points = 50 # Number of data points to save
 
 # Initialize and run the pipeline
