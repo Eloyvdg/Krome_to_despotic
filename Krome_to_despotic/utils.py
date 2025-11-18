@@ -291,14 +291,14 @@ def validate_density_array(density_array, test_name, safe, verbose):
     - The function prints details of any modifications if `verbose` is True.
     """
 
-    if safe is True:
-        print('Do you want to use a log normal density distribution?')
-        input_user = input('Type y to confirm or any key to continue with default values: ')
-        if input_user == 'y':
-            mean = float(input('Enter the mean density (cm^-3): '))
-            std = float(input('Enter the standard deviation of the density (cm^-3): '))
-            points = int(input('Enter the number of density points to generate: '))
-            density_array = lognormal_density(mean, std, points)
+    #if safe is True:
+    #    print('Do you want to use a log normal density distribution?')
+    #    input_user = input('Type y to confirm or any key to continue with default values: ')
+    #    if input_user == 'y':
+    #        mean = float(input('Enter the mean density (cm^-3): '))
+    #        std = float(input('Enter the standard deviation of the density (cm^-3): '))
+    #       points = int(input('Enter the number of density points to generate: '))
+    #        density_array = lognormal_density(mean, std, points)
 
     if density_array is None: 
         if 'ismEqTest' in test_name: 
