@@ -1,0 +1,6 @@
+# macOS-compatible build configuration
+FC = gfortran
+FFLAGS = -O2 -fPIC
+CC = clang
+CFLAGS = -O2 -fPIC
+LDFLAGS =
