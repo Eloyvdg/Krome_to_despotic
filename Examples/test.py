@@ -48,7 +48,7 @@ safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
 skip_krome = False # Skip KROME and run despotic only
-points = 50 # Number of data points to save
+n_densities = 50 # Number of densities to save
 
 # Initialize and run the pipeline
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
@@ -58,7 +58,7 @@ krome_start = KromeDespoticPipeline(path_krome, path_cloud,
 
 krome_start.run(density_array = density_array,
                           metallicity_input = metallicity_input, 
-                          redshift_input = redshift_input, points = points, 
+                          redshift_input = redshift_input, n_densities = n_densities, 
                           crate = crate, chi0 = chi0, include_chemistry = include_chemistry, clean = clean, save = save, safe = safe, 
                           LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
                           species = species, properties = properties, length = length, geometry = geometry,

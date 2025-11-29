@@ -756,7 +756,7 @@ class KromeDespoticPipeline():
             species:str = None, properties:list = None, skip_krome:bool=False,
             sigmaNT:float = None, dVdr:float = None, LTE:bool=False, safe:bool = False,
             length:str = None, geometry:str = None, folder_name_save:str = 'build', project:str = None, 
-            path_to_krome_data:str = None, points:int = 50, **kwargs):
+            path_to_krome_data:str = None, n_densities:int = 50, **kwargs):
         
         """
         Runs the KROME to despotic pipeline, integrating chemical modeling with line emission calculations.
@@ -806,7 +806,7 @@ class KromeDespoticPipeline():
             - 'sphere': Expanding sphere    
             - 'slab'  : Static slab 
             The default is 'LVG'
-        points: int, optional
+        n_densities: int, optional
             Nummber of evenly distributed densities
         kwargs : dict, optional     
             Additional keyword arguments passed to KromeRunner.run_krome method:
@@ -992,4 +992,4 @@ class KromeDespoticPipeline():
                 data = None
             
             despotic_runner.run_despotic(density_array, n_transitions[i], data = data, species_KROME = species_KROME, species_despotic = species_despotic, crate = crate, chi = chi, sigmaNT = sigmaNT, chem = include_chemistry, properties = properties, LTE = LTE, 
-                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save, points = points, **kwargs)
+                                         verbose = self.verbose, length = length, geometry = geometry, folder_name_save = folder_name_save, points = n_densities, **kwargs)

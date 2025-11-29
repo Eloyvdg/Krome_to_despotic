@@ -49,7 +49,7 @@ safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
 skip_krome = True # Skip KROME and run despotic only
-points = 50 # Number of densities to save
+n_densities = 50 # Number of densities to save
 
 # Initialize and run the pipeline
 krome_start = KromeDespoticPipeline(path_krome, path_cloud,
@@ -63,7 +63,7 @@ files = glob.glob(path + 'build_crate_chi0_solar/*')
 path_to_krome_data = file + '/build/'
 krome_start.run(density_array = density_array,
                         metallicity_input = metallicity_input, 
-                        redshift_input = redshift_input, points = points,
+                        redshift_input = redshift_input, n_densities = n_densities,
                         crate = crate*crate_array[i], chi0 = chi0_array[j], include_chemistry = include_chemistry,
                         clean = clean, save = save, safe = safe, 
                         LTE = LTE, dVdr_input = dVdr, sigmaNT = sigmaNT, d2g = d2g,
