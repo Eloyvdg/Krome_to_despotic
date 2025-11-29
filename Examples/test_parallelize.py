@@ -53,7 +53,7 @@ safe = False # Ignore warnings and errors
 clean = True # Clean KROME build folder
 verbose = True # Verbose output
 skip_krome = False # Skip KROME and run despotic only
-points = 50 # Number of densities to save
+n_densities = 50 # Number of densities to save
 
 # --- Setup ---
 crate_array = np.logspace(-3, 3, num=2, base=10)
@@ -81,7 +81,7 @@ def run_case(trial_idx, i, j):
             d2g=d2g,
             species=species,
             properties=properties,
-            points = points,
+            n_densities = n_densities,
             length=length,
             geometry=geometry,
             folder_name_save=f'build_crate_chi0_solar_z10/build_{i}_{j}',
